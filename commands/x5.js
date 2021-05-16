@@ -1,8 +1,62 @@
 var players = [["",""]];
 
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
 function times(){
-    playersSorted = players;
-    playersSorted.sort((a, b) => a[1] - b[1]);
+
+    var aux = new Array(11), pick = 1, turn = 1;
+    var team1 = [], team2 = [];
+
+    for(let i = 0; i < aux.length; i++){
+        aux[i] = [];
+    }
+
+    for(let i = 1; i < 11; i++){
+        let index = parseInt(players[i][1]);
+        if(index <= 10) aux[index].push(players[i][0]);
+        else aux[10].push(players[i][0]);
+    }
+    var count = 0;
+    for(let i = 10; i >= 0; i--){
+        shuffleArray(aux[i]);
+        for(let j = 0; j < aux[i].length; j++){
+            if(pick){
+                team1.push(aux[i][j]);
+                console.log("Team 1 picked " + aux[i][j] + " Rank: " + i);
+                if(turn == 1 || turn == 5){
+                    pick = 0;
+                }
+                else{
+                    count++;
+                    if(count == 2){
+                        count = 0;
+                        pick = 0;
+                    }
+                }
+            }
+            else{
+                team2.push(aux[i][j]);
+                console.log("Team 2 picked " + aux[i][j] + " Rank: " + i);
+                if(turn == 1 || turn == 10){
+                    pick = 1;
+                }
+                else{
+                    count++;
+                    if(count == 2){
+                        count = 0;
+                        pick = 1;
+                    }
+                }
+            }
+            turn++;
+        }
+    }
+    return [team1, team2];
 }
 
 module.exports = function(msg, args){
@@ -48,9 +102,17 @@ module.exports = function(msg, args){
     }
     else{
         if(players.length >= 11){
-            //let teams = ["", ""];
-            //teams = times();
-            msg.reply("Tá pronto ainda não :(");
+            var team1 = [], team2 = [];
+            [team1, team2] = times();
+            var buffer = "TIME 1:\n";
+            for(let i = 0; i < 5; i++){
+                buffer += team1[i] + "\n";
+            }
+            buffer += "\nTIME 2:\n";
+            for(let i = 0; i < 5; i++){
+                buffer += team2[i] + "\n";
+            }
+            msg.channel.send(buffer);
         }
         else{
             msg.reply("Cabeças insuficientes.");
