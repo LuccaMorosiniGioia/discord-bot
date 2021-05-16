@@ -11,10 +11,9 @@ const commands = {
     x5
 };
 
-module.exports = function(msg){
+/*module.exports = function(msg){
     let  tokens = msg.content.split(" ");
     let command = tokens.shift();
-
     if(command.charAt(0) == "!" && msg.author.username != "Gau"){
         command = command.substring(1);
         if(command in commands){
@@ -24,4 +23,7 @@ module.exports = function(msg){
             msg.reply("Invalid command!")
         }
     }
-}
+    if(msg.mentions.has(client.user.id)){
+        msg.reply("Fala marreco");
+    }
+}*/
