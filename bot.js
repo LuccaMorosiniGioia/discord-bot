@@ -44,7 +44,10 @@ function commandHandler(msg){
     let command = tokens.shift();
     if(command.charAt(0) == "!" && msg.author.username != "Gau"){
         command = command.substring(1);
-        if(command in commands){
+        if(command === "x5"){
+            commands[command](msg, tokens, client);
+        }
+        else if(command in commands){
             commands[command](msg, tokens);
         }
         else{
